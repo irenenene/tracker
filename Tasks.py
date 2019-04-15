@@ -9,4 +9,4 @@ class Tasks:
         self.user = User("Unassigned")
 		
     def getTask(self):
-        return self.name + ' - ' + self.user.name + ' - ' + taskStatus
+        return self.taskName + ' - ' + self.user.name + ' - ' + self.taskStatus
