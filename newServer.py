@@ -8,13 +8,21 @@ def clientHandler(clientSock):
     while True:
         clientIn = clientSock.recv(port).decode()
         tokenList = clientIn.split("|")
+
         if tokenList[0] == "1":
             taskBoard.createTask(tokenList[1], "To-Do", tokenList[2])
-        if tokenList[0] == "0":
+        elif tokenList[0] == "0":
             clientSock.close()
             print("Closing connection")
             break
-        if tokenList[0] == "10":
+        elif tokenList[0] == "4":
+            taskBoard.logTime(tokenList[1])
+        elif tokenList[0] == "8":
+            taskBoard.editTask(tokenList[1], tokenList[2], tokenList[3])
+        elif tokenList[0] == "9": #find
+            retString = taskBoard.findTask(tokenList[1])
+            clientSock.send(retString.encode())
+        elif tokenList[0] == "10":
             contents = taskBoard.getBoard()
             clientSock.send(contents.encode())
 
