@@ -6,3 +6,11 @@ Planned Submission 3 contributions:
 - time logging for tasks
 - ability for client to set their username upon first connecting
 - printing users currently logged in
+
+Submission 3 contributions:
+- fixes to message retrieval, now most in/out is client side
+- wrote client-server requests
+
+Still to implement:
+- binding sockets to username
+- username functionality
