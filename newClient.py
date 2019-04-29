@@ -40,9 +40,13 @@ def startStop():
     tName = input("Enter the name of the task: ")
     sendStr = "4|" + tName
     s.send(sendStr.encode())
+    print("Done.")
 
 def delTask():
-    print("not implemented yet. should be ez as checking a name.")
+    tName = input("Enter the name of the task: ")
+    sendStr = "3|" + tName
+    s.send(sendStr.encode())
+    print("Done.")
 
 ##### End Function Definitions #####
 

@@ -22,7 +22,7 @@ class Board:
     def deleteTask(self, taskToDelete):
         for task in self.taskList:
             if task.taskName == taskToDelete:
-                taskList.remove(task)
+                self.taskList.remove(task)
                 print ("Delete successful")
                 break
 
@@ -41,8 +41,11 @@ class Board:
                 return t.getTask()
         return "Task not found."
 
-    # START HERE
-    # def logtime(self, tName):
-    #     for t in self.taskList:
-    #         if t.taskName == tName:
-    #             if t.active:
+
+    def logTime(self, tName):
+        for t in self.taskList:
+            if t.taskName == tName:
+                if t.active:
+                    t.endWorkTime()
+                else:
+                    t.startWorkTime()

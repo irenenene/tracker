@@ -10,11 +10,13 @@ def clientHandler(clientSock):
         tokenList = clientIn.split("|")
 
         if tokenList[0] == "1":
-            taskBoard.createTask(tokenList[1], "To-Do", tokenList[2])
+            taskBoard.createTask(tokenList[1], "incomplete", tokenList[2])
         elif tokenList[0] == "0":
             clientSock.close()
             print("Closing connection")
             break
+        elif tokenList[0] == "3":
+            taskBoard.deleteTask(tokenList[1])
         elif tokenList[0] == "4":
             taskBoard.logTime(tokenList[1])
         elif tokenList[0] == "8":
