@@ -18,3 +18,12 @@ Client
 2. View the dockerfile, you should only have to copy newClient.py into the client subdirectory
 3. run "docker image build -t client ."
 4. run "docker container run --rm -it --name TaskImage client"
+
+---Program information---
+
+Task Status Key:
+- incomplete: -
+- complete: x
+- moved: >
+- event: *
+- note: ~
