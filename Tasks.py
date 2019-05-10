@@ -38,7 +38,7 @@ class Tasks:
         retString = '\t' + self.getSymbol() + ' ' + self.taskName
         if self.user:
             retString += " \\\\ " + self.user.name + ' '
-        retString += "Time logged: " + str(format((self.timeSpent/60), '.2f')) + " min"
+        retString += " \\\\ Time Logged: " + str(format((self.timeSpent/60), '.2f')) + " min"
         return retString
 
     # def totalTimeWorked(self, startTime, endTime):

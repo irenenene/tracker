@@ -13,14 +13,17 @@ def clientHandler(clientSock):
             taskBoard.createTask(tokenList[1], "incomplete", tokenList[2])
         elif tokenList[0] == "0":
             clientSock.close()
+            socketList.remove(c)
             print("Closing connection")
             break
+        elif tokenList[0] == "2":
+            taskBoard.editTask(tokenList[1], tokenList[2], tokenList[3])
         elif tokenList[0] == "3":
             taskBoard.deleteTask(tokenList[1])
         elif tokenList[0] == "4":
             taskBoard.logTime(tokenList[1])
-        elif tokenList[0] == "8":
-            taskBoard.editTask(tokenList[1], tokenList[2], tokenList[3])
+        elif tokenList[0] == "6":
+            clientSock.send(getUsers().encode())
         elif tokenList[0] == "9": #find
             retString = taskBoard.findTask(tokenList[1])
             clientSock.send(retString.encode())
@@ -28,9 +31,18 @@ def clientHandler(clientSock):
             contents = taskBoard.getBoard()
             clientSock.send(contents.encode())
 
+def getUsers():
+    userString = ""
+    for socket, user in users:
+        if socket in socketList:
+            userString += user + "\n"
+    return userString
+
 
 taskBoard = Board()
 socketList = []
+users = list()
+exiting = False
 
 serverSock = socket.socket()
 port = 6789
@@ -39,9 +51,17 @@ serverSock.bind((ipAddr, port))
 serverSock.listen(5)
 print("socket is listening")
 
-while True:
-    c, addr = serverSock.accept()
-    socketList.append(c)
-    print("Got connection from", addr)
-    newThread = threading.Thread(target=clientHandler, args=(c,))
-    newThread.start()
+while (exiting == False):
+    try:
+        c, addr = serverSock.accept()
+        socketList.append(c)
+
+        socketName = c.recv(port).decode()
+        users.append((c, socketName))
+
+        print("Got connection from", addr)
+        newThread = threading.Thread(target=clientHandler, args=(c,))
+        newThread.start()
+    except KeyboardInterrupt:
+        exiting = True
+        raise

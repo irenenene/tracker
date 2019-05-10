@@ -28,7 +28,7 @@ class Board:
 
 #changes to output format of board also need to be changed in task class
     def getBoard(self):
-        retString = "Task name - Assignee - Status" + '\n'
+        retString = "-- Tasks --" + '\n'
         for task in self.taskList:
             retString += task.getTask()
             retString += '\n'

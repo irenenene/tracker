@@ -1,4 +1,6 @@
 import socket
+import datetime
+
 #the string sent to the server will always start with a number so the server
 #knows what type of command is issued
 #format: number|option|option|etc.
@@ -7,14 +9,8 @@ import socket
 ##### Function Definitions #####
 
 def mainMenu():
-    print("Main Menu")
-    print("0. Exit")
-    print("1. Enter a new task")
-    print("2. Edit an existing task")
-    print("3. Delete a task")
-    print("4. Start/Stop work")
-    print("5. View details")
-    print("10. View the task board")
+    print("1. New | 2. Edit | 3. Delete | 4. Start Timer | 5. View All | 6. View Users | 0. Exit")
+
 
 #returns a string to be encoded and sent to the server // should change this method
 def addTask():
@@ -32,7 +28,7 @@ def editTask():
      print(recvString)
      newName = input("Enter a new name: ")
      newUser = input("Enter a new user: ")
-     sendStr = "8|" + tName + '|' + newName + '|' + newUser
+     sendStr = "2|" + tName + '|' + newName + '|' + newUser
      s.send(sendStr.encode())
      print("Done.")
 
@@ -50,30 +46,50 @@ def delTask():
 
 ##### End Function Definitions #####
 
+print("Welcome.")
+username = input("Enter your username: ")
+
 s = socket.socket()
 port = 6789
 s.connect(("127.0.0.1", port))
+s.send(username.encode())
 userInput = "init"
 
-while userInput != "exit":
-    print("Welcome.")
+# "1. New | 2. Edit | 3. Delete | 4. Start Timer | 5. View Tasks | 6. View Users | 0. Exit
+
+while userInput != "0":
+    now = datetime.datetime.now()
+    print (now.strftime("%A %B %d"))
+
     mainMenu()
-    userInput = input("Please enter the number corresponding to your choice: ")
-    if userInput == "0":
+    userInput = input("Your selection: ")
+    userInput = userInput.lower()
+    userInput = userInput.strip()
+
+    if userInput == "0" or userInput == "exit":
         print("Goodbye")
         s.send("0".encode())
         s.close()
         break
-    elif userInput == "1":
+    elif userInput == "1" or userInput == "new":
         s.send(addTask().encode())
-    elif userInput == "2":
+    elif userInput == "2" or userInput == "edit":
         editTask()
-    elif userInput == "3":
+    elif userInput == "3" or userInput == "delete":
         delTask()
-    elif userInput == "4":
+    elif userInput == "4" or userInput == "start timer":
         startStop()
-    elif userInput == "10":
+    elif userInput == "5" or userInput == "view tasks":
         sendString = "10"
         s.send(sendString.encode())
         recvString = s.recv(port).decode()
         print(recvString)
+        print("-----------")
+    elif userInput == "6" or userInput == "view users":
+        sendString = "6"
+        s.send(sendString.encode())
+        recvString = s.recv(port).decode()
+        print("--Current Users--")
+        print(recvString)
+    else:
+        print("Invalid Selection")
